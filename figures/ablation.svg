@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="390">
+<rect width="100%" height="100%" fill="white"/>
+<style>text{font-family:Arial;fill:#111}.a{stroke:#222;stroke-width:2}.g{stroke:#ddd}.b{fill:#4c78a8}.z{fill:#e45756}</style>
+<text x="450" y="25" text-anchor="middle" font-size="18" font-weight="bold">Optimization ablation at N=401</text>
+<line class="g" x1="65" y1="310.0" x2="850" y2="310.0"/>
+<text x="55" y="315.0" text-anchor="end" font-size="13">0</text>
+<line class="g" x1="65" y1="267.0" x2="850" y2="267.0"/>
+<text x="55" y="272.0" text-anchor="end" font-size="13">10</text>
+<line class="g" x1="65" y1="224.0" x2="850" y2="224.0"/>
+<text x="55" y="229.0" text-anchor="end" font-size="13">20</text>
+<line class="g" x1="65" y1="181.0" x2="850" y2="181.0"/>
+<text x="55" y="186.0" text-anchor="end" font-size="13">30</text>
+<line class="g" x1="65" y1="138.0" x2="850" y2="138.0"/>
+<text x="55" y="143.0" text-anchor="end" font-size="13">40</text>
+<line class="g" x1="65" y1="95.0" x2="850" y2="95.0"/>
+<text x="55" y="100.0" text-anchor="end" font-size="13">50</text>
+<line class="g" x1="65" y1="52.0" x2="850" y2="52.0"/>
+<text x="55" y="57.0" text-anchor="end" font-size="13">60</text>
+<line class="a" x1="65" y1="52" x2="65" y2="310"/>
+<line class="a" x1="65" y1="310" x2="850" y2="310"/>
+<text transform="translate(18 190) rotate(-90)" text-anchor="middle" font-size="14">Wall time (seconds)</text>
+<rect class="b" x="90" y="239.05" width="82" height="70.95"/>
+<text x="131" y="232.05" text-anchor="middle" font-size="13">16.50</text>
+<text transform="translate(131 325) rotate(25)" font-size="12">baseline</text>
+<rect class="b" x="207" y="249.112" width="82" height="60.888"/>
+<text x="248" y="242.112" text-anchor="middle" font-size="13">14.16</text>
+<text transform="translate(248 325) rotate(25)" font-size="12">batch</text>
+<rect class="b" x="324" y="226.15" width="82" height="83.85"/>
+<text x="365" y="219.15" text-anchor="middle" font-size="13">19.50</text>
+<text transform="translate(365 325) rotate(25)" font-size="12">mask scan</text>
+<rect class="b" x="441" y="78.61699999999999" width="82" height="231.383"/>
+<text x="482" y="71.61699999999999" text-anchor="middle" font-size="13">53.81</text>
+<text transform="translate(482 325) rotate(25)" font-size="12">queue</text>
+<rect class="b" x="558" y="277.234" width="82" height="32.766"/>
+<text x="599" y="270.234" text-anchor="middle" font-size="13">7.62</text>
+<text transform="translate(599 325) rotate(25)" font-size="12">domain list</text>
+<rect class="z" x="675" y="278.825" width="82" height="31.174999999999997"/>
+<text x="716" y="271.825" text-anchor="middle" font-size="13">7.25</text>
+<text transform="translate(716 325) rotate(25)" font-size="12">alternating</text>
+</svg>

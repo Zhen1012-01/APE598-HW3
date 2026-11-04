@@ -1,0 +1,1 @@
+domain=94363 sweeps=22747 processed=978417545 topples=1160746083

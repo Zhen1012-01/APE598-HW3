@@ -1,0 +1,7 @@
+variant,wall_seconds,speedup_vs_baseline
+baseline,16.5,1.0
+batch,14.16,1.1652542372881356
+mask_scan,19.5,0.8461538461538461
+queue,53.81,0.306634454562349
+domain_list,7.62,2.1653543307086616
+alternating,7.25,2.2758620689655173

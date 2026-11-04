@@ -1,0 +1,7 @@
+workload,variant,run,wall_seconds
+1001,baseline,1,609.47
+1001,baseline,2,611.89
+1001,baseline,3,613.58
+1001,optimized,1,270.45
+1001,optimized,2,269.92
+1001,optimized,3,270.22

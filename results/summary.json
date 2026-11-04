@@ -1,0 +1,88 @@
+{
+  "environment": {
+    "hostname": "fa26-cs598a-033.cs.illinois.edu",
+    "os": "Ubuntu 26.04.1 LTS",
+    "cpu": "Intel Xeon Silver 4216 @ 2.10GHz",
+    "logical_cores": 4,
+    "memory_gib": 15,
+    "compiler": "GCC 15.2.0",
+    "flags": "-O3 -lm -g -Werror"
+  },
+  "n1001": {
+    "baseline_runs_seconds": [
+      609.47,
+      611.89,
+      613.58
+    ],
+    "optimized_runs_seconds": [
+      270.45,
+      269.92,
+      270.22
+    ],
+    "baseline_median_seconds": 611.89,
+    "optimized_median_seconds": 270.22,
+    "speedup": 2.264414181037673,
+    "baseline_range_seconds": 4.110000000000014,
+    "optimized_range_seconds": 0.5299999999999727,
+    "baseline_peak_rss_kib_median": 12484,
+    "optimized_peak_rss_kib_median": 14792
+  },
+  "n401_ablation": [
+    {
+      "variant": "baseline",
+      "seconds": 16.5,
+      "speedup": 1.0
+    },
+    {
+      "variant": "batch",
+      "seconds": 14.16,
+      "speedup": 1.1652542372881356
+    },
+    {
+      "variant": "mask_scan",
+      "seconds": 19.5,
+      "speedup": 0.8461538461538461
+    },
+    {
+      "variant": "queue",
+      "seconds": 53.81,
+      "speedup": 0.306634454562349
+    },
+    {
+      "variant": "domain_list",
+      "seconds": 7.62,
+      "speedup": 2.1653543307086616
+    },
+    {
+      "variant": "alternating",
+      "seconds": 7.25,
+      "speedup": 2.2758620689655173
+    }
+  ],
+  "correctness": {
+    "n1001_png_sha256": "f40a04e8034d3d6d3988af3ea0da2eb17756c1b830dd09fa5c1864c7493f3fb4",
+    "sizes": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      10,
+      31,
+      101,
+      201
+    ],
+    "asan_ubsan_n": 201,
+    "valgrind_n": 101,
+    "errors": 0,
+    "leaks": 0
+  },
+  "profiling": {
+    "gprof_stabilize_percent": 99.94,
+    "perf_usable": false,
+    "perf_event_paranoid": 4,
+    "queue_events_n401": 982807074,
+    "final_domain_n1001": 589365,
+    "final_sweeps_n1001": 132647
+  }
+}

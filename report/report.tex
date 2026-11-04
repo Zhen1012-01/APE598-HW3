@@ -1,0 +1,60 @@
+\documentclass[sigplan,screen,nonacm]{acmart}
+\settopmatter{printacmref=false,printccs=false,printfolios=true}
+\renewcommand\footnotetextcopyrightpermission[1]{}
+\pagestyle{plain}
+\title{Work Reduction for a Finite Abelian Sandpile}
+\author{Zicheng Song}
+\affiliation{\institution{University of Illinois Urbana-Champaign}\department{CS 598 Advanced Performance Engineering}\country{USA}}
+\begin{document}
+\begin{abstract}
+I optimize end-to-end computation of the identity on a $1001\times1001$ Pacman-shaped Abelian sandpile. Profiling assigns 99.94\% of baseline time to stabilization. Batch toppling, compact geometry, padded contiguous storage, and alternating traversal reduce the three-run median from 611.89 s to 270.22 s, a 2.264$\times$ speedup, while preserving the complete output bit-for-bit.
+\end{abstract}
+\maketitle
+\section{Baseline and Profiling}
+The supplied C program allocates rows separately and repeatedly sweeps candidate cells. Each visit recomputes the circle and mouth tests; an unstable cell topples once. I compiled unchanged source with GCC 15.2.0 and \texttt{-O3 -g -Werror -lm}. On Ubuntu 26.04 with four Intel Xeon Silver 4216 vCPUs and 15 GiB RAM, three $N=1001$ runs took 609.47, 611.89, and 613.58 s.
+The VM has \texttt{perf}, but unprivileged events are disabled by \texttt{perf\_event\_paranoid=4}. I did not change system policy. \texttt{gprof} at $N=401$ assigns 99.94\% to \texttt{stabilize} and 0.06\% to PNG compression.
+\section{Optimizations}
+\textbf{Batch toppling.} For $v\ge4$, I apply $q=\lfloor v/4\rfloor$ topples, leave $v-4q$, and add $q$ to each neighbor. Abelian toppling makes this equivalent to $q$ single topples.
+
+\textbf{Compact geometry and storage.} Valid Pacman cells are precomputed once in row-major order. A contiguous grid with one-cell zero padding represents loss beyond the rectangular boundary. Hot-loop entries are padded indices, removing coordinate division, domain tests, row indirection, and boundary branches. Non-domain image cells are retained and inverted exactly as in the baseline.
+
+\textbf{Alternating sweeps.} Successive passes traverse the compact list in opposite directions. Order independence preserves the answer, while bidirectional propagation reduces $N=401$ sweeps from 22,747 to 21,880.
+\section{Experimental Method}
+All measurements ran serially on the same otherwise-idle VM. \texttt{/usr/bin/time} measured the complete normal program including PNG generation. I report medians of three $N=1001$ runs and compare every optimized full output by SHA-256. Smaller exact tests cover $N=1,2,3,4,5,10,31,101,201$.
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{../figures/ablation.pdf}
+\caption{End-to-end N=401 ablation; lower is better.}
+\end{figure}
+\clearpage
+\section{Results and Analysis}
+Optimized $N=1001$ times are 270.45, 269.92, and 270.22 s (median 270.22 s, range 0.53 s). The baseline median is 611.89 s, giving 2.264$\times$. Median RSS rises from 12,484 to 14,792 KiB.
+\begin{table}[h]
+\centering
+\caption{Full N=1001 end-to-end measurements.}
+\begin{tabular}{lrr}
+\toprule
+ & Baseline & Optimized \\
+\midrule
+Runs (s) & 609.47, 611.89, 613.58 & 270.45, 269.92, 270.22 \\
+Median (s) & 611.89 & 270.22 \\
+Range (s) & 4.11 & 0.53 \\
+Peak RSS (KiB) & 12,484 & 14,792 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+At $N=401$, batch toppling improves 16.50 to 14.16 s. A naive precomputed mask regresses to 19.50 s by scanning all $N^2$ cells. The correct active queue reaches 53.81 s because it processes 982,807,074 events; scheduling costs exceed saved checks. The padded list reaches 7.62 s and alternating order 7.25 s. Removing geometry work and improving locality matter more than avoiding every stable-cell visit.
+\section{Correctness and Introspection}
+Every tested PNG equals the baseline; the $N=1001$ SHA-256 begins \texttt{f40a04e8}. Raw checks require all domain values in $[0,3]$. ASan and UBSan pass at $N=201$; Valgrind at $N=101$ reports zero errors and leaks.
+
+The queue failure was instructive: a plausible worklist created almost one billion fine-grained events. Profiling and ablation prevented retaining it. The final method is sequential and scan-based, so stabilization still dominates. Parallel toppling may help, but shared neighbor updates require synchronization or a different decomposition.
+
+\subsection{Assumptions and Applicability}
+The optimized code assumes the same finite Pacman geometry, integer toppling threshold four, and sink behavior as the assignment. It accepts arbitrary positive sizes rather than recognizing or hardcoding N=1001. The one-cell padding is semantically valid because values beyond the rectangular image are sinks and are never read back. Batch toppling relies on integer division and the Abelian property, not on a particular traversal order or processor instruction set. All arithmetic that constructs the circular mask uses 64-bit integers; the hot grid retains the baseline 32-bit representation.
+
+\subsection{Reproducibility and Limitations}
+The artifact keeps the untouched baseline and every measured variant, with Make targets for each. A Python runner records wall times and SHA-256 hashes in CSV and JSON. The Dockerfile installs only a standard compiler, Python, Valgrind, and time. The final implementation is deliberately single-threaded and uses no machine-specific flags. Its remaining limitation is algorithmic: 132,647 full compact-list sweeps and 37.4 billion unstable-cell visits occur at N=1001, so stabilization remains expensive despite cheaper visits. A future approach should reduce propagation iterations without reintroducing queue-scale scheduling overhead.
+\section*{AI Assistance Disclosure}
+An OpenAI coding agent assisted with implementation, remote experiment automation, tests, data reduction, figure generation, and drafting. All measurements were executed on the stated UIUC VM and are preserved in the artifact.
+\end{document}
