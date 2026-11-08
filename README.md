@@ -27,6 +27,13 @@ Docker:
 
 The default container command is a quick N=101 smoke run. Use `docker run --rm hw3 ./sandpile.exe 1001` for the full workload.
 
+Report (optional, requires Tectonic):
+
+```sh
+cd report
+tectonic report.tex
+```
+
 ## Correctness
 
 ```sh
@@ -47,6 +54,7 @@ Exact baseline equality and raw-grid stability passed for N=1,2,3,4,5,10,31,101,
 GCC 15.2.0 used -O3 -g -Werror -lm on a four-vCPU Xeon Silver 4216 VM. N=1001 median time fell from 611.89 to 270.22 s (2.264x); median RSS rose from 12484 to 14792 KiB.
 
 ## Optimizations
+
 Batch toppling applies floor(v/4) topples at once. A compact row-major Pacman domain list avoids geometry checks. One-cell padded contiguous storage removes hot-loop boundary branches. Alternating sweep direction reduces propagation passes. At N=401: baseline 16.50 s, batch 14.16 s, compact forward 7.62 s, and alternating 7.25 s.
 
 Rejected: a full mask scan took 19.50 s because it scanned all N squared cells. The correct active queue took 53.81 s and processed 982807074 events. perf was blocked by perf_event_paranoid=4; gprof attributed 99.94 percent to stabilize.

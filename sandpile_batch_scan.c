@@ -21,7 +21,6 @@ static void die(const char *s) {
 int N = 801;
 int **grid;
 
-// you can also use this function to debug print your sandpile
 static void render(char *filename) {
   int chan = 3;
   unsigned char *pixels = (unsigned char *)malloc(N * N * chan * sizeof(char));
