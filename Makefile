@@ -18,6 +18,9 @@ test: all baseline/sandpile_baseline.exe
 sanitize:
 	$(CC) -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer sandpile.c -o tests/sandpile_sanitize.exe $(LDLIBS)
 	ASAN_OPTIONS=detect_leaks=1 tests/sandpile_sanitize.exe 201
+valgrind:
+	$(CC) $(CFLAGS) sandpile.c -o tests/sandpile_valgrind.exe $(LDLIBS)
+	valgrind --leak-check=full --error-exitcode=99 tests/sandpile_valgrind.exe 101
 clean:
 	rm -f sandpile.exe sandpile_batch.exe sandpile_queue.exe sandpile_forward.exe baseline/*.exe tests/*.exe identity.png
-.PHONY: all variants test sanitize clean
+.PHONY: all variants test sanitize valgrind clean

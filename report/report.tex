@@ -46,7 +46,7 @@ Peak RSS (KiB) & 12,484 & 14,792 \\
 
 At $N=401$, batch toppling improves 16.50 to 14.16 s. A naive precomputed mask regresses to 19.50 s by scanning all $N^2$ cells. The correct active queue reaches 53.81 s because it processes 982,807,074 events; scheduling costs exceed saved checks. The padded list reaches 7.62 s and alternating order 7.25 s. Removing geometry work and improving locality matter more than avoiding every stable-cell visit.
 \section{Correctness and Introspection}
-Every tested PNG equals the baseline; the $N=1001$ SHA-256 begins \texttt{f40a04e8}. Raw checks require all domain values in $[0,3]$. ASan and UBSan pass at $N=201$; Valgrind at $N=101$ reports zero errors and leaks.
+Every tested PNG equals the baseline; the $N=1001$ SHA-256 begins \texttt{4883dba5}. Raw checks require all domain values in $[0,3]$. ASan and UBSan pass at $N=201$; Valgrind at $N=101$ reports zero errors and leaks.
 
 The queue failure was instructive: a plausible worklist created almost one billion fine-grained events. Profiling and ablation prevented retaining it. The final method is sequential and scan-based, so stabilization still dominates. Parallel toppling may help, but shared neighbor updates require synchronization or a different decomposition.
 

@@ -18,3 +18,28 @@
 
 # Compiled handouts
 /handout/*.pdf
+
+# Generated programs and outputs
+*.exe
+*.o
+*.obj
+*.out
+identity.png
+grid.bin
+tests/grid_*.bin
+
+# Raw profiling and caches
+*.data
+__pycache__/
+*.py[cod]
+.pytest_cache/
+/report/render/
+
+# Editor, OS, and machine-private files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.local
+*.key
+*.pem

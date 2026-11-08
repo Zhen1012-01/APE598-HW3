@@ -3,4 +3,4 @@ RUN apt-get update && apt-get install -y --no-install-recommends build-essential
 WORKDIR /artifact
 COPY . .
 RUN make all variants
-CMD ["./sandpile.exe","1001"]
+CMD ["./sandpile.exe","101"]
